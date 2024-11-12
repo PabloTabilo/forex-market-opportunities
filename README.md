@@ -19,16 +19,24 @@ We can convert these rates to negative logarithms to simplify the mathematics, b
 If the sum of all these values is negative, we can execute a sequence of foreign exchange that can generate a net gain. In this case, we can use the Bellman-Ford (BF) algorithm to detect that negative cycle. If the cycle sum is negative, we know that we have an arbitrage opportunity.
 
 Being more explicit with the example:
+
 $$0.9_{\frac{USD}{EUR}}  \cdot 120_{\frac{EUR}{JPY}} \cdot 0.0092_{\frac{JPY}{USD}} = 0.9936 < 1 \rightarrow \text{no arbitrage opportunity}$$
+
 using logarithms:
+
 $$-log(0.9_{\frac{USD}{EUR}})  \cdot -log(120_{\frac{EUR}{JPY}}) \cdot -log(0.0092_{\frac{JPY}{USD}}) = 0.00296 > 0 \rightarrow \text{no arbitrage opportunity}$$
+
 
 ## A simple example
 
 With a simple example, if we start with 100 USD:
+
 $$100 \text{ USD} \cdot 0.9 = 90 \text{ EUR} \rightarrow 90 \text{ EUR} \cdot 120 = 10800 \text{ JPY} \rightarrow 10800 \cdot 0.0092 = 99.36 \text{ USD}$$
-In the previous example its not advantageble follow this path, but if we change he rates, that can reflect an opportunity on the market:
+
+In the previous example, it's not advantageous to follow this path. But if we change the rates to reflect a market opportunity
+
 $$100 \text{ USD} \cdot 0.9 = 90 \text{ EUR} \rightarrow 90 \text{ EUR} \cdot 120 = 10800 \text{ JPY} \rightarrow 10800 \cdot 0.0095 = 102.6 \text{ USD} \rightarrow \text{opportunity arbitrage!}$$
+
 
 # General Equations
 An arbitrage opportunity exists if:
