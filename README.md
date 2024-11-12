@@ -32,10 +32,12 @@ $$100 \text{ USD} \cdot 0.9 = 90 \text{ EUR} \rightarrow 90 \text{ EUR} \cdot 12
 
 # General Equations
 An arbitrage opportunity exists if:
+
 $$\prod_{k=1}^{n} r_{c_k \rightarrow c_{k+1}} > 1$$
+
 where:
 * $r_{c_k \rightarrow c_{k+1}}$ is the exchange rate from currency $c_k$ to currency $c_{k+1}$
-* $c_{n+1} = c_1 $ to complete the cycle back to the starting currency
+* $c_{n+1} = c_1$ to complete the cycle back to the starting currency
 * $n$ is the number of exchanges in the cycle.
 
 Alternatively, an arbitrage opportunity exists if:
@@ -46,10 +48,13 @@ $$\sum_{k=1}^n -ln(r_{c_k \rightarrow c_{k+1}}) < 0$$
 
 # How can we connect to Bellman-Ford Algorihtm?
 By assigning weights to the edges of the currency exchange graph as the negative logarithm of the exchange rates:
+
 $$w_{c_k \rightarrow c_{k+1}} =  -ln(r_{c_k \rightarrow c_{k+1}})$$
 
 So, an arbitrage opportunity exists if there is a negative cycle in the graph:
+
 $$\sum_{k = 1}^n w_{c_k \rightarrow c_{k+1}} < 0$$
+
 
 
 
