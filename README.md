@@ -62,8 +62,3 @@ $$w_{c_k \rightarrow c_{k+1}} =  -ln(r_{c_k \rightarrow c_{k+1}})$$
 So, an arbitrage opportunity exists if there is a negative cycle in the graph:
 
 $$\sum_{k = 1}^n w_{c_k \rightarrow c_{k+1}} < 0$$
-
-
-
-
-
