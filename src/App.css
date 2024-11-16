@@ -1,0 +1,34 @@
+.app-container{
+    display: flex;
+    height: 100vh;
+}
+
+.left-panel{
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    border-right: 2px solid #ddd;
+}
+
+.scenario-container{
+    flex: 1;
+    border-bottom: 2px solid #ddd;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.paths-container{
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.right-panel{
+    flex: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
