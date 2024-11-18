@@ -8,6 +8,7 @@
     flex-direction: column;
     flex: 1;
     border-right: 2px solid #ddd;
+    width: 25%;
 }
 
 .scenario-container{
@@ -30,5 +31,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 75%;
 }
 
