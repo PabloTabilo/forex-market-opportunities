@@ -39,6 +39,8 @@ $$100 \text{ USD} \cdot 0.9 = 90 \text{ EUR} \rightarrow 90 \text{ EUR} \cdot 12
 
 
 # General Equations
+A currency is represented as $c_k$, where $k$ denotes the country under consideration. Here, $k \in K$ and $K$ is the set of currencies corresponding to different countries.
+
 An arbitrage opportunity exists if:
 
 $$\prod_{k=1}^{n} r_{c_k \rightarrow c_{k+1}} > 1$$
@@ -62,3 +64,10 @@ $$w_{c_k \rightarrow c_{k+1}} =  -ln(r_{c_k \rightarrow c_{k+1}})$$
 So, an arbitrage opportunity exists if there is a negative cycle in the graph:
 
 $$\sum_{k = 1}^n w_{c_k \rightarrow c_{k+1}} < 0$$
+
+# Visualization of the problem
+<p align="center">
+  <img src="img/current_graph_problem.PNG" style="max-width:100%;">
+</p>
+
+# Technologies
