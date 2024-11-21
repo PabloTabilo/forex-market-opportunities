@@ -23,21 +23,25 @@ const GraphController: React.FC<GraphControllerProps> = ({ width, height }) => {
 
     const initialEdges: Edge[] = [
         // ref USD
-        { source: 0, target: 1, label: "0.9" }, // EUR
-        { source: 2, target: 0, label: "0.0095" }, // JPY
+        { source: 0, target: 1, weight: 0.9 }, // EUR
+        { source: 0, target: 2, weight: 1./0.0095 }, // EUR
+        
         //{ source: 0, target: 3, label: "0.78891" }, // GBP
         //{ source: 0, target: 4, label: "1.401" }, // CAD
         //{ source: 0, target: 5, label: "973.01" }, // CLP
         //{ source: 0, target: 6, label: "7.2376" }, // CNY
 
          // ref EUR
-        { source: 1, target: 2, label: "120" }, // JPY
+         //{ source: 1, target: 0, weight: 1./0.9 }, // USA
+        { source: 1, target: 2, weight: 120 }, // JPY
         //{ source: 1, target: 3, label: "0.83574" }, // GBP
         //{ source: 1, target: 4, label: "1.4851" }, // CAD
         //{ source: 1, target: 5, label: "1,030.8" }, // CLP
         //{ source: 1, target: 6, label: "7.6675" }, // CNY
 
          // ref JPY
+         //{ source: 2, target: 0, weight: 0.0095 }, // JPY
+         //{ source: 2, target: 1, weight: "0.00083" }, // JPY
          //{ source: 2, target: 3, label: "0.0051002" }, // GBP
          //{ source: 2, target: 4, label: "0.0090643" }, // CAD
          //{ source: 2, target: 5, label: "6.2915" }, // CLP

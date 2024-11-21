@@ -9,7 +9,7 @@ export interface Node {
   export interface Edge {
     source: number;
     target: number;
-    label: string; // Exchange rate
+    weight: number;
   }
   
   export class GraphModel {
@@ -27,8 +27,8 @@ export interface Node {
       this.nodes.push({ id, x, y, label, color });
     }
   
-    addEdge(sourceId: number, targetId: number, label: string): void {
-      this.edges.push({ source: sourceId, target: targetId, label });
+    addEdge(sourceId: number, targetId: number, weight: number): void {
+      this.edges.push({ source: sourceId, target: targetId, weight });
     }
   
     getNodes(): Node[] {
@@ -38,11 +38,11 @@ export interface Node {
     getEdges(): Edge[] {
       return this.edges;
     }
+    
 
     getAdjacencyList() : {from : number, to : number, weight : number} [] {
         return this.edges.map((edge) => {
-            const w = -Math.log(parseFloat(edge.label));
-            return {from : edge.source, to : edge.target, weight : w};
+            return {from : edge.source, to : edge.target, weight : -Math.log(edge.weight)};
         });
     }
 
@@ -50,8 +50,8 @@ export interface Node {
         let n = this.nodes.length;
         let m : number[][] = new Array(n).fill(0).map(() => new Array(n).fill(0));
         this.edges.forEach((edge) => {
-            m[edge.source][edge.target] = -Math.log(parseFloat(edge.label));
-            m[edge.target][edge.source] = -Math.log(parseFloat(edge.label));
+            m[edge.source][edge.target] = -Math.log(edge.weight);
+            m[edge.target][edge.source] = -Math.log(1.0 / edge.weight);
         });
         return m;
     }

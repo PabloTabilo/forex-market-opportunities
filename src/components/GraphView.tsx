@@ -58,7 +58,7 @@ const GraphView: React.FC<GraphViewProps> = ({ nodes, edges, onNodeClick, width,
         {edges.map((edge, i) => {
           const source = nodes.find((node) => node.id === edge.source);
           const target = nodes.find((node) => node.id === edge.target);
-          const formattedLabel = parseFloat(edge.label);
+          const formattedLabel = edge.weight;
           return (
             source &&
             target && (

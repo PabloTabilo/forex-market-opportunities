@@ -7,13 +7,23 @@ let sol: {
     [key: number]: { cost: number; mask: number; paths: { from: number; to: number }[] }[];
 } = {};
 
+let cache : Set<string>;
+
 function getNoBits(int : number){
     const binary = (int).toString(2);
     return [...binary].filter(el => el === '1').length;
   }
 
 function f(cost : number, mask : number, last : number, matrix : number[][], paths : {from : number, to : number}[]){
-    
+    const stateKey = `${mask}-${last}`;
+
+    if(cache.has(stateKey)){
+        console.log(`Skipping already visited state: ${stateKey}`);
+        return;
+    }
+
+    cache.add(stateKey);
+
     console.log("cost:", cost);
     console.log("mask:", mask);
     console.log("last:", last);
@@ -61,6 +71,7 @@ export function dynamicProgramming(
 ){
     n = matrix[0].length;
     globalStartNode = startNode;
+    cache = new Set();
     let i = startNode;
 
     for(let j = 0; j < n; j++){
