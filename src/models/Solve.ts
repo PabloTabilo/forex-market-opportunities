@@ -94,6 +94,20 @@ export function Solve(
     return sol;
 }
 
+function normalizeToZero(value : number, epsilon : number = 1e-12){
+    if(Math.abs(value) < epsilon){
+        return 0;
+    }
+    return value;
+}
+
+function check_nearest(new_distance : number, current_distance : number, epsilon : number = 1e-12) : boolean{
+    if(Math.abs(new_distance - current_distance) < epsilon){
+        return false;
+    }
+    return (new_distance < current_distance);
+}
+
 // Bellman ford 
 // Pro:
 // - TC is polynomial O(E * V)
@@ -132,12 +146,20 @@ export function BellmanFord(
         distance[start] = 0;
         // Relax edges
         for(let k = 0; k < n-1; k++){
+            console.log("k = ",k);
             for(let u = 0; u < n; u++){
                 for(const edge of graph[u]){
                     const {to: v, weight} = edge;
-                    if(distance[u] + weight < distance[v]){
-                        distance[v] = distance[u] + weight;
+                    const newDist = normalizeToZero(distance[u] + weight);
+                    console.log(`from u = ${u} -> to = ${v}, weight = ${weight}`);
+                    console.log(`distance[u] + weight = ${distance[u]} + ${weight}`); 
+                    console.log(`distance[u] + weight = ${newDist} vs distance[v] = ${distance[v]}`);
+                    
+                    if(check_nearest(newDist, distance[v])){
+                        distance[v] = newDist;
                         predecessors[v] = u;
+                        console.log("update >> distance =", distance);
+                        console.log("update >> predecessors =", predecessors);
                     }
                 }
             }
@@ -149,17 +171,26 @@ export function BellmanFord(
                 const {to: v, weight} = edge;
                 if(distance[u] + weight < distance[v]){
                     // This is a negative cycle
-                    const cycle = []
+                    const cycle = [];
                     let current = v;
                     const visited = new Set();
-                    while(!visited.has(current)){
-                        visited.add(current);
-                        cycle.push(current);
+
+                    // To ensure we find the actual cycle, traverse up to 'n' times
+                    for (let i = 0; i < n; i++) {
                         current = predecessors[current];
                     }
-                    cycle.push(current);
+
+                    // Now, reconstruct the cycle
+                    const cycleStart = current;
+                    do {
+                        cycle.push(current);
+                        current = predecessors[current];
+                    } while (current !== cycleStart);
+
+                    cycle.push(cycleStart);
                     cycle.reverse();
                     return cycle;
+
                 }
             }
         }
