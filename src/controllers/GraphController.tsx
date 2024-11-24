@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import GraphView from "../components/GraphView";
 import { GraphModel, Node, Edge } from "../models/GraphModel";
-import { bellmanFord } from "../models/BellmanFordAlgorithms";
-import { dynamicProgramming } from "../models/dynamicProgramming";
+import { Solve, BellmanFord } from "../models/Solve";
 
 interface GraphControllerProps {
   width: number;
@@ -24,7 +23,7 @@ const GraphController: React.FC<GraphControllerProps> = ({ width, height }) => {
     const initialEdges: Edge[] = [
         // ref USD
         { source: 0, target: 1, weight: 0.9 }, // EUR
-        { source: 0, target: 2, weight: 1./0.0095 }, // EUR
+        { source: 0, target: 2, weight: 1./0.0095 }, // JPY
         
         //{ source: 0, target: 3, label: "0.78891" }, // GBP
         //{ source: 0, target: 4, label: "1.401" }, // CAD
@@ -94,7 +93,32 @@ const GraphController: React.FC<GraphControllerProps> = ({ width, height }) => {
     console.log(adjacencyMatrix);
     console.log(nodes)
 
-    const sol = dynamicProgramming(adjacencyMatrix, 0);
+    const sol = Solve(adjacencyMatrix, 0);
+
+    console.log(sol);
+
+    /*
+    const result = bellmanFord(adjacencyList, graph.nodes.length, 0); // Start from USD (Node 0)
+    if (result.hasNegativeCycle) {
+      console.log("Negative cycles found:");
+      result.paths.forEach((path, index) =>
+        console.log(`Cycle ${index + 1}: ${path.join(" -> ")}`)
+      );
+    } else {
+      console.log("No negative cycles found.");
+    }
+*/
+  };
+
+  const runBF = () => {
+    //const adjacencyList = graph.getAdjacencyList();
+    const adjacencyMatrix = graph.getAdjacencyMatrix();
+    const nodes = graph.getMapNodeid();
+
+    console.log(adjacencyMatrix);
+    console.log(nodes)
+
+    const sol = BellmanFord(adjacencyMatrix, 0);
 
     console.log(sol);
 
@@ -113,7 +137,8 @@ const GraphController: React.FC<GraphControllerProps> = ({ width, height }) => {
 
   return (
     <div>
-        <button onClick={runSolve}>Run Solve</button>
+        <button onClick={runSolve}>Run RecursiveSol</button>
+        <button onClick={runBF}>Run BellmanFord</button>
         <div onMouseMove={handleMouseMove}>
         <GraphView
             nodes={graph.getNodes()}
