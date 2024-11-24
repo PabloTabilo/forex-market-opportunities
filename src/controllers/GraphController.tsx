@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import GraphView from "../components/GraphView";
 import { GraphModel, Node, Edge } from "../models/GraphModel";
-import { Solve, BellmanFord } from "../models/Solve";
+import { Solve } from "../models/Solve";
+import {BellmanFord} from '../models/BellmanFord';
 
 interface GraphControllerProps {
   width: number;

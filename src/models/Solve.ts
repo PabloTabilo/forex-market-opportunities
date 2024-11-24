@@ -1,11 +1,8 @@
-interface Result {
-    hasNegativeCycle: boolean;
-    paths: string[][];
-  }
+import { Result } from './Result';
 
+let debug = false;
 let n = -1;
 let globalStartNode = -1;
-let dp;
 let matrix : number[][];
 
 let sol: {
@@ -25,15 +22,15 @@ function f(cost : number, mask : number, paths : {from : number, to : number, co
     const stateKey = `${mask}-${last_conn.from}-${last_conn.to}`;
     
     if(cache.has(stateKey)){
-        //console.log(`Skipping already visited state: ${stateKey}`);
+        if(debug) console.log(`Skipping already visited state: ${stateKey}`);
         return;
     }
 
     //cache.add(stateKey);
-    //console.log("mask:", mask);
-    //console.log("paths:");
-    //paths.forEach((p)=>console.log(p));
-    //console.log("Total cost:", cost);
+    if(debug) console.log("mask:", mask);
+    if(debug) console.log("paths:");
+    if(debug) paths.forEach((p)=>console.log(p));
+    if(debug) console.log("Total cost:", cost);
     let bits = getNoBits(mask);
     // if mask && (1 << startNode) comeback to startNode, is a cycle
     // bits > 2 : has more than two nodes on the solution
@@ -43,18 +40,18 @@ function f(cost : number, mask : number, paths : {from : number, to : number, co
             sol[bits] = [];
         }
         sol[bits].push({cost, mask, paths : [...paths]});
-        //console.log("found a solution!")
+        if(debug) console.log("found a solution!")
     }
     
     // cycle to soon
     if( ( (mask & (1<<globalStartNode)) !== 0) && bits <= 2){
-        //console.log("cycle too soon!");
+        if(debug) console.log("cycle too soon!");
         return;
     }
 
     // complete cycle
     if(mask === (1 << n)-1){
-        //console.log("cycle is complete!")
+        if(debug) console.log("cycle is complete!")
         return;
     }
 
@@ -69,14 +66,14 @@ function f(cost : number, mask : number, paths : {from : number, to : number, co
 
 // Recursive solution
 // Pros:
-// - find all cycles with size k
+// - find all cycles with size k from a starting node
 // Cons:
 // - TC its exponential
 // - Works for a finite size of nodes, using mask maybe 2^32
 export function Solve(
     m : number[][],
     startNode : number,
-){
+): Result{
     matrix = m;
     n = matrix[0].length;
     globalStartNode = startNode;
@@ -91,113 +88,28 @@ export function Solve(
         }
     }
 
-    return sol;
-}
+    // Aggregate results from `sol`
+    let hasNegativeCycle = false;
+    const paths: { from: number; to: number }[][] = [];
 
-function normalizeToZero(value : number, epsilon : number = 1e-12){
-    if(Math.abs(value) < epsilon){
-        return 0;
-    }
-    return value;
-}
-
-function check_nearest(new_distance : number, current_distance : number, epsilon : number = 1e-12) : boolean{
-    if(Math.abs(new_distance - current_distance) < epsilon){
-        return false;
-    }
-    return (new_distance < current_distance);
-}
-
-// Bellman ford 
-// Pro:
-// - TC is polynomial O(E * V)
-// Cons:
-// - only find one cycle not all cycles.
-interface EdgeBf{
-    to: number;
-    weight: number;
-}
-
-export function BellmanFord(
-    matrix : number[][],
-    s : number,
-){
-    n = matrix[0].length;
-    globalStartNode = s;
-
-    const graph : EdgeBf[][] = [];
-    const distance = new Array(n).fill(Infinity);
-    const predecessors = new Array(n).fill(-1);
-
-    // Build graph for BF
-    for(let i=0;i<n;i++){
-        graph[i] = [];
-        for(let j=0;j<n;j++){
-            if(i !== j){
-                graph[i].push({to : j, weight: matrix[i][j]});
+    for (const bitCount in sol) {
+        if (sol[bitCount].length > 0) {
+            hasNegativeCycle = true;
+            for (const entry of sol[bitCount]) {
+                paths.push(
+                    entry.paths.map((path) => ({
+                        from: path.from,
+                        to: path.to,
+                    }))
+                );
             }
         }
     }
 
-    // Run BF
-    for(let start = 0; start < n; start++){
-        distance.fill(Infinity);
-        predecessors.fill(-1);
-        distance[start] = 0;
-        // Relax edges
-        for(let k = 0; k < n-1; k++){
-            console.log("k = ",k);
-            for(let u = 0; u < n; u++){
-                for(const edge of graph[u]){
-                    const {to: v, weight} = edge;
-                    const newDist = normalizeToZero(distance[u] + weight);
-                    console.log(`from u = ${u} -> to = ${v}, weight = ${weight}`);
-                    console.log(`distance[u] + weight = ${distance[u]} + ${weight}`); 
-                    console.log(`distance[u] + weight = ${newDist} vs distance[v] = ${distance[v]}`);
-                    
-                    if(check_nearest(newDist, distance[v])){
-                        distance[v] = newDist;
-                        predecessors[v] = u;
-                        console.log("update >> distance =", distance);
-                        console.log("update >> predecessors =", predecessors);
-                    }
-                }
-            }
-        }
-
-        // Check for negative cycles
-        for(let u = 0; u < n; u++){
-            for(const edge of graph[u]){
-                const {to: v, weight} = edge;
-                if(distance[u] + weight < distance[v]){
-                    // This is a negative cycle
-                    const cycle = [];
-                    let current = v;
-                    const visited = new Set();
-
-                    // To ensure we find the actual cycle, traverse up to 'n' times
-                    for (let i = 0; i < n; i++) {
-                        current = predecessors[current];
-                    }
-
-                    // Now, reconstruct the cycle
-                    const cycleStart = current;
-                    do {
-                        cycle.push(current);
-                        current = predecessors[current];
-                    } while (current !== cycleStart);
-
-                    cycle.push(cycleStart);
-                    cycle.reverse();
-                    return cycle;
-
-                }
-            }
-        }
-
-    }
-    
-    return -1;
+    return {
+        hasNegativeCycle,
+        paths,
+    };
 }
 
 // Others approach
