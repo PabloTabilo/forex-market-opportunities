@@ -16,9 +16,6 @@ const GraphController: React.FC<GraphControllerProps> = ({ width, height }) => {
         { id: 1, x: 550, y: 140, label: "EUR", color: "#33FF57" },
         { id: 2, x: 650, y: 300, label: "JPY", color: "#3357FF" },
         { id: 3, x: 350, y: 150, label: "CLP", color : `#${Math.floor(Math.random() * 16777215).toString(16)}`},
-        //{ id: 4, x: 250, y: 350, label: "CAD", color : `#${Math.floor(Math.random() * 16777215).toString(16)}`},
-        //{ id: 5, x: 450, y: 150, label: "CLP", color : `#${Math.floor(Math.random() * 16777215).toString(16)}`},
-        //{ id: 6, x: 630, y: 450, label: "CNY", color : `#${Math.floor(Math.random() * 16777215).toString(16)}`},
     ];
 
     const initialEdges: Edge[] = [
@@ -45,8 +42,8 @@ const GraphController: React.FC<GraphControllerProps> = ({ width, height }) => {
 
   const runSolve = () => {
     const adjacencyMatrix = graph.getAdjacencyMatrix();
-    const nodes = graph.getMapNodeid();
     console.log(adjacencyMatrix);
+    const nodes = graph.getMapNodeid();
     console.log(nodes)
     const sol = Solve(adjacencyMatrix, 0);
     console.log(sol);
@@ -54,8 +51,8 @@ const GraphController: React.FC<GraphControllerProps> = ({ width, height }) => {
 
   const runBF = () => {
     const adjacencyMatrix = graph.getAdjacencyMatrix();
-    const nodes = graph.getMapNodeid();
     console.log(adjacencyMatrix);
+    const nodes = graph.getMapNodeid();
     console.log(nodes)
     const sol = BellmanFord(adjacencyMatrix, 0);
     console.log(sol);

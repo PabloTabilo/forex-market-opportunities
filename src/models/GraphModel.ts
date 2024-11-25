@@ -57,10 +57,10 @@ export interface Node {
     getAdjacencyMatrix() : number[][] {
         let n = this.nodes.length;
         let m : number[][] = new Array(n).fill(0).map(() => new Array(n).fill(0));
+        //console.log(this.edges) why id?
         this.edges.forEach((edge) => {
-            m[edge.source][edge.target] = -Math.log(edge.weight);
-            m[edge.target][edge.source] = -Math.log(1.0 / edge.weight);
-        });
+            m[edge.source.id][edge.target.id] = -Math.log(edge.weight);
+          });
         return m;
     }
 
