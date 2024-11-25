@@ -65,9 +65,11 @@ So, an arbitrage opportunity exists if there is a negative cycle in the graph:
 
 $$\sum_{k = 1}^n w_{c_k \rightarrow c_{k+1}} < 0$$
 
-# Visualization of the problem
+# Visualization of the problem: Complete Graph
 <p align="center">
   <img src="img/current_graph_problem.PNG" style="max-width:100%;">
 </p>
 
 # Technologies
+* [d3.js](https://d3js.org/)
+* [React](https://es.react.dev/)

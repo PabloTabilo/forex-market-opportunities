@@ -1,19 +1,7 @@
 import * as d3 from "d3";
 import React, { useEffect, useRef } from "react";
+import { Node, Edge } from "../models/GraphModel";
 
-interface Node {
-  id: number;
-  x: number;
-  y: number;
-  label: string;
-  color: string;
-}
-
-interface Edge {
-  source: Node;
-  target: Node;
-  weight: number;
-}
 
 interface GraphViewProps {
   nodes: Node[];
