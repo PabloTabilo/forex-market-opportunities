@@ -39,6 +39,14 @@ export interface Node {
       return this.edges;
     }
     
+    getBidirectionEdges(): Edge[] {
+      let bidirectionalEdges : Edge[] = [];
+      this.edges.forEach((edge) => {
+        bidirectionalEdges.push({source : edge.source, target : edge.target, weight : edge.weight});
+        bidirectionalEdges.push({source : edge.target, target : edge.source, weight : 1.0 / edge.weight});
+      });
+    return bidirectionalEdges;
+    }
 
     getAdjacencyList() : {from : number, to : number, weight : number} [] {
         return this.edges.map((edge) => {

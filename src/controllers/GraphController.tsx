@@ -65,91 +65,34 @@ const GraphController: React.FC<GraphControllerProps> = ({ width, height }) => {
   const [selectedNodes, setSelectedNodes] = useState<number[]>([]);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
-  const handleNodeClick = (nodeId: number) => {
-    setSelectedNodes((prev) => {
-      const newSelected = [...prev, nodeId];
-      if (newSelected.length === 2) {
-        const [source, target] = newSelected;
-        const label = prompt("Enter exchange rate:") || "";
-        graph.addEdge(source, target, label);
-        setSelectedNodes([]);
-      }
-      return newSelected;
-    });
-  };
-
-  const handleMouseMove = (event: React.MouseEvent) => {
-    const rect = (event.target as SVGSVGElement).getBoundingClientRect();
-    setMousePosition({
-      x: event.clientX - rect.left,
-      y: event.clientY - rect.top,
-    });
-  };
-
   const runSolve = () => {
-    //const adjacencyList = graph.getAdjacencyList();
     const adjacencyMatrix = graph.getAdjacencyMatrix();
     const nodes = graph.getMapNodeid();
-
     console.log(adjacencyMatrix);
     console.log(nodes)
-
     const sol = Solve(adjacencyMatrix, 0);
-
     console.log(sol);
-
-    /*
-    const result = bellmanFord(adjacencyList, graph.nodes.length, 0); // Start from USD (Node 0)
-    if (result.hasNegativeCycle) {
-      console.log("Negative cycles found:");
-      result.paths.forEach((path, index) =>
-        console.log(`Cycle ${index + 1}: ${path.join(" -> ")}`)
-      );
-    } else {
-      console.log("No negative cycles found.");
-    }
-*/
   };
 
   const runBF = () => {
-    //const adjacencyList = graph.getAdjacencyList();
     const adjacencyMatrix = graph.getAdjacencyMatrix();
     const nodes = graph.getMapNodeid();
-
     console.log(adjacencyMatrix);
     console.log(nodes)
-
     const sol = BellmanFord(adjacencyMatrix, 0);
-
     console.log(sol);
-
-    /*
-    const result = bellmanFord(adjacencyList, graph.nodes.length, 0); // Start from USD (Node 0)
-    if (result.hasNegativeCycle) {
-      console.log("Negative cycles found:");
-      result.paths.forEach((path, index) =>
-        console.log(`Cycle ${index + 1}: ${path.join(" -> ")}`)
-      );
-    } else {
-      console.log("No negative cycles found.");
-    }
-*/
   };
 
   return (
     <div>
         <button onClick={runSolve}>Run RecursiveSol</button>
         <button onClick={runBF}>Run BellmanFord</button>
-        <div onMouseMove={handleMouseMove}>
         <GraphView
             nodes={graph.getNodes()}
-            edges={graph.getEdges()}
-            onNodeClick={handleNodeClick}
+            edges={graph.getBidirectionEdges()}
             width={width}
             height={height}
-            mousePosition={mousePosition}
         />
-        </div>
     </div>
   );
 };
