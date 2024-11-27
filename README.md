@@ -70,6 +70,9 @@ $$\sum_{k = 1}^n w_{c_k \rightarrow c_{k+1}} < 0$$
   <img src="img/current_graph_problem.PNG" style="max-width:100%;">
 </p>
 
+# Tasks
+* [Trello Activities](https://trello.com/b/g8V64xTz/forex-market-application)
+
 # Technologies
 * [d3.js](https://d3js.org/)
 * [React](https://es.react.dev/)
