@@ -2,15 +2,12 @@ import * as d3 from "d3";
 import React, { useEffect, useRef } from "react";
 import { Node, Edge } from "../models/GraphModel";
 
-
 interface GraphViewProps {
   nodes: Node[];
   edges: Edge[];
-  width: number;
-  height: number;
 }
 
-const GraphView: React.FC<GraphViewProps> = ({ nodes, edges, width, height }) => {
+const GraphView: React.FC<GraphViewProps> = ({ nodes, edges }) => {
   const svgRef = useRef<SVGSVGElement>(null);
 
   useEffect(() => {
@@ -20,6 +17,10 @@ const GraphView: React.FC<GraphViewProps> = ({ nodes, edges, width, height }) =>
 
     // Clear existing elements
     svg.selectAll("*").remove();
+
+    // Get dimensions of the SVG container
+    const width = svgRef.current.clientWidth;
+    const height = svgRef.current.clientHeight;
 
     // Initialize the simulation
     const simulation = d3.forceSimulation(nodes)
@@ -95,35 +96,33 @@ const GraphView: React.FC<GraphViewProps> = ({ nodes, edges, width, height }) =>
         const dr = Math.sqrt(dx * dx + dy * dy) * 0.5; // Curvature
 
         // Create a quadratic Bezier curve
-        return `
-          M${d.source.x},${d.source.y}
-          Q${d.source.x + dx / 2 - dy / 4},${d.source.y + dy / 2 + dx / 4}
-          ${d.target.x},${d.target.y}
-        `;
+        return `M${d.source.x},${d.source.y}
+                Q${d.source.x + dx / 2 - dy / 4},${d.source.y + dy / 2 + dx / 4}
+                ${d.target.x},${d.target.y}`;
       });
 
       arrow.attr("points", (d: any) => {
         const dx = d.target.x - d.source.x;
         const dy = d.target.y - d.source.y;
-      
+
         // Calculate control point for the curve
         const cx = d.source.x + dx / 2 - dy / 4;
         const cy = d.source.y + dy / 2 + dx / 4;
-      
+
         // Position arrow closer to the target (85% of the way)
         const arrowT = 0.84; // Adjust percentage to bring arrow closer
         const mx = (1 - arrowT) * (1 - arrowT) * d.source.x + 2 * (1 - arrowT) * arrowT * cx + arrowT * arrowT * d.target.x;
         const my = (1 - arrowT) * (1 - arrowT) * d.source.y + 2 * (1 - arrowT) * arrowT * cy + arrowT * arrowT * d.target.y;
-      
+
         // Normalize the direction vector at the midpoint
         const length = Math.sqrt(dx * dx + dy * dy);
         const nx = dx / length;
         const ny = dy / length;
-      
+
         // Arrowhead size
         const arrowLength = 14;
         const arrowWidth = 7;
-      
+
         // Calculate arrowhead points
         const tipX = mx + nx * arrowLength; // Arrow tip
         const tipY = my + ny * arrowLength;
@@ -131,10 +130,9 @@ const GraphView: React.FC<GraphViewProps> = ({ nodes, edges, width, height }) =>
         const leftY = tipY - ny * arrowLength - nx * arrowWidth / 2;
         const rightX = tipX - nx * arrowLength - ny * arrowWidth / 2;
         const rightY = tipY - ny * arrowLength + nx * arrowWidth / 2;
-      
+
         return `${tipX},${tipY} ${leftX},${leftY} ${rightX},${rightY}`;
       });
-      
 
       linkLabels
         .attr("x", (d: any) => {
@@ -174,9 +172,9 @@ const GraphView: React.FC<GraphViewProps> = ({ nodes, edges, width, height }) =>
     }
 
     return () => simulation.stop();
-  }, [nodes, edges, width, height]);
+  }, [nodes, edges]);
 
-  return <svg ref={svgRef} width={width} height={height} style={{ border: "1px solid black" }}></svg>;
+  return <svg ref={svgRef} style={{ width: "100%", height: "100%", border: "1px solid black" }}></svg>;
 };
 
 export default GraphView;

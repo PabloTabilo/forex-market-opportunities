@@ -1,15 +1,12 @@
 import React, { useState } from "react";
 import GraphView from "../components/GraphView";
+import Paths from "../components/Paths"; // Import the Paths component
 import { GraphModel, Node, Edge } from "../models/GraphModel";
 import { Solve } from "../models/Solve";
 import {BellmanFord} from '../models/BellmanFord';
 
-interface GraphControllerProps {
-  width: number;
-  height: number;
-}
 
-const GraphController: React.FC<GraphControllerProps> = ({ width, height }) => {
+const GraphController: React.FC = () => {
     // we can start with USD
     const initialNodes: Node[] = [
         { id: 0, x: 350, y: 550, label: "USD", color: "#FF5733" },
@@ -39,6 +36,8 @@ const GraphController: React.FC<GraphControllerProps> = ({ width, height }) => {
     ];
 
   const [graph] = useState(new GraphModel(initialNodes, initialEdges));
+  const [bellmanFordSolution, setBellmanFordSolution] = useState<any>(null); // Store Bellman-Ford solution
+  const [recursiveSolution, setRecursiveSolution] = useState<any>(null); // Store Recursive solution
 
   const runSolve = () => {
     const adjacencyMatrix = graph.getAdjacencyMatrix();
@@ -46,6 +45,7 @@ const GraphController: React.FC<GraphControllerProps> = ({ width, height }) => {
     const nodes = graph.getMapNodeid();
     console.log(nodes)
     const sol = Solve(adjacencyMatrix, 0);
+    setRecursiveSolution(sol); // Pass Recursive solution to Paths
     console.log(sol);
   };
 
@@ -55,19 +55,29 @@ const GraphController: React.FC<GraphControllerProps> = ({ width, height }) => {
     const nodes = graph.getMapNodeid();
     console.log(nodes)
     const sol = BellmanFord(adjacencyMatrix, 0);
+    setBellmanFordSolution(sol); // Pass Bellman-Ford solution to Paths
     console.log(sol);
   };
 
   return (
-    <div>
+    <div className="graph-area-container">
+      <div className="area-container">
+        
+        <GraphView
+          nodes={graph.getNodes()}
+          edges={graph.getEdges()}
+        />
+        
         <button onClick={runSolve}>Run RecursiveSol</button>
         <button onClick={runBF}>Run BellmanFord</button>
-        <GraphView
-            nodes={graph.getNodes()}
-            edges={graph.getEdges()}
-            width={width}
-            height={height}
+      </div>
+      
+      <div className="paths-container">
+        <Paths
+          bellmanFordSolution={bellmanFordSolution}
+          recursiveSolution={recursiveSolution}
         />
+      </div>
     </div>
   );
 };
