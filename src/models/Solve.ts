@@ -1,6 +1,6 @@
 import { Result } from './Result';
 
-import {normalizeToZero, check_nearest} from './Utils';
+import {normalizeToZero} from './Utils';
 
 let debug = false;
 let n = -1;
@@ -68,6 +68,7 @@ export function Solve(
     m : number[][],
     startNode : number,
 ): Result{
+    let start = startNode;
     matrix = m;
     n = matrix[0].length;
     //globalStartNode = startNode;
