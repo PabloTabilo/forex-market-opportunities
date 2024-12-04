@@ -71,7 +71,7 @@ const GraphController: React.FC = () => {
         <Paths
           bellmanFordSolution={bellmanFordSolution}
           recursiveSolution={recursiveSolution}
-          nodesMap={graph.getMapNodeid()}
+          nodes={graph.getNodes()}
           matrixCost={graph.getAdjacencyMatrixNotLog()}
         />
     </div>
