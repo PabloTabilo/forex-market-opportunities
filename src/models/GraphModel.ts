@@ -15,10 +15,18 @@ export interface Node {
   export class GraphModel {
     nodes: Node[] = [];
     edges: Edge[] = [];
+    m : number[][] = [];
+    n : number = 0;
+    
   
     constructor(initialNodes: Node[], initialEdges: Edge[]) {
       this.nodes = initialNodes;
       this.edges = initialEdges;
+      this.n = this.nodes.length;
+      this.m = new Array(this.n).fill(0).map(() => new Array(this.n).fill(0));
+      this.edges.forEach((edge) => {
+        this.m[edge.source][edge.target] = edge.weight;
+      });
     }
   
     addNode(x: number, y: number, label: string): void {
@@ -55,15 +63,18 @@ export interface Node {
     }
 
     getAdjacencyMatrix() : number[][] {
-        let n = this.nodes.length;
-        let m : number[][] = new Array(n).fill(0).map(() => new Array(n).fill(0));
-        //console.log(this.edges) why id?
-        this.edges.forEach((edge) => {
-            m[edge.source.id][edge.target.id] = -Math.log(edge.weight);
-          });
-        return m;
+      let mlog : number[][] = new Array(this.n).fill(0).map(() => new Array(this.n).fill(0));
+      for(let i = 0; i < this.n; i++){
+        for(let j = 0; j < this.n; j++){
+          mlog[i][j] = -Math.log(this.m[i][j]);
+        }
+      }
+      return mlog;
     }
 
+    getAdjacencyMatrixNotLog() : number[][] {
+      return this.m;
+  }
     getMapNodeid(){
         let map_nodeid : {[key : number] : string} = {};
         this.nodes.forEach((node) => {

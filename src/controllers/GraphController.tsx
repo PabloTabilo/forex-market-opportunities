@@ -41,7 +41,6 @@ const GraphController: React.FC = () => {
 
   const runSolve = () => {
     const adjacencyMatrix = graph.getAdjacencyMatrix();
-    console.log(adjacencyMatrix);
     const nodes = graph.getMapNodeid();
     console.log(nodes)
     const sol = Solve(adjacencyMatrix, 0);
@@ -51,7 +50,6 @@ const GraphController: React.FC = () => {
 
   const runBF = () => {
     const adjacencyMatrix = graph.getAdjacencyMatrix();
-    console.log(adjacencyMatrix);
     const nodes = graph.getMapNodeid();
     console.log(nodes)
     const sol = BellmanFord(adjacencyMatrix, 0);
@@ -60,8 +58,7 @@ const GraphController: React.FC = () => {
   };
 
   return (
-    <div className="graph-area-container">
-      <div className="area-container">
+    <div className="area-container">
         
         <GraphView
           nodes={graph.getNodes()}
@@ -70,14 +67,13 @@ const GraphController: React.FC = () => {
         
         <button onClick={runSolve}>Run RecursiveSol</button>
         <button onClick={runBF}>Run BellmanFord</button>
-      </div>
-      
-      <div className="paths-container">
+
         <Paths
           bellmanFordSolution={bellmanFordSolution}
           recursiveSolution={recursiveSolution}
+          nodesMap={graph.getMapNodeid()}
+          matrixCost={graph.getAdjacencyMatrixNotLog()}
         />
-      </div>
     </div>
   );
 };
