@@ -12,6 +12,7 @@ interface Node {
 interface PathsProps {
   bellmanFordSolution: any; // Bellman-Ford solution
   recursiveSolution: any; // Recursive solution
+  floydWarshallSolution: any;
   nodes: Node[]; // Nodes with colors and labels
   matrixCost: number[][]; // Cost matrix
 }
@@ -19,6 +20,7 @@ interface PathsProps {
 const Paths: React.FC<PathsProps> = ({
   bellmanFordSolution,
   recursiveSolution,
+  floydWarshallSolution,
   nodes,
   matrixCost,
 }) => {
@@ -212,6 +214,14 @@ const Paths: React.FC<PathsProps> = ({
       });
     }
 
+    // Draw floydWarshallSolution paths
+    if (floydWarshallSolution?.paths) {
+      floydWarshallSolution.paths.forEach((path: any) => {
+        drawPath(path, (width - maxWidth) / 2, currentY, maxWidth);
+        currentY += pathHeight;
+      });
+    }
+
     // Draw Recursive paths
     if (recursiveSolution?.paths) {
       recursiveSolution.paths.forEach((path: any) => {
@@ -219,7 +229,7 @@ const Paths: React.FC<PathsProps> = ({
         currentY += pathHeight;
       });
     }
-  }, [bellmanFordSolution, recursiveSolution, nodes, matrixCost]);
+  }, [bellmanFordSolution, recursiveSolution, floydWarshallSolution, nodes, matrixCost]);
 
   return <svg ref={svgRef} style={{ width: "100%", height: "100%" }}></svg>;
 };

@@ -27,7 +27,6 @@ export interface Node {
       this.edges.forEach((edge) => {
         this.m[edge.source][edge.target] = edge.weight;
       });
-      console.log(this.nodes)
     }
   
     addNode(x: number, y: number, label: string): void {

@@ -4,6 +4,7 @@ import Paths from "../components/Paths"; // Import the Paths component
 import { GraphModel, Node, Edge } from "../models/GraphModel";
 import { Solve } from "../models/Solve";
 import {BellmanFord} from '../models/BellmanFord';
+import {FloydWarshall} from '../models/Floyd-Warshall';
 
 
 const GraphController: React.FC = () => {
@@ -38,20 +39,24 @@ const GraphController: React.FC = () => {
   const [graph] = useState(new GraphModel(initialNodes, initialEdges));
   const [bellmanFordSolution, setBellmanFordSolution] = useState<any>(null); // Store Bellman-Ford solution
   const [recursiveSolution, setRecursiveSolution] = useState<any>(null); // Store Recursive solution
+  const [FloydWarshallSolution, setFloydWarshallSolution] = useState<any>(null); // Store Recursive solution
 
   const runSolve = () => {
     const adjacencyMatrix = graph.getAdjacencyMatrix();
-    const nodes = graph.getMapNodeid();
-    console.log(nodes)
     const sol = Solve(adjacencyMatrix, 0);
     setRecursiveSolution(sol); // Pass Recursive solution to Paths
     console.log(sol);
   };
 
-  const runBF = () => {
+  const runFW = () => {
     const adjacencyMatrix = graph.getAdjacencyMatrix();
-    const nodes = graph.getMapNodeid();
-    console.log(nodes)
+    const sol = FloydWarshall(adjacencyMatrix);
+    setFloydWarshallSolution(sol); // Pass Bellman-Ford solution to Paths
+    console.log(sol);
+  };
+
+  const runBF= () => {
+    const adjacencyMatrix = graph.getAdjacencyMatrix();
     const sol = BellmanFord(adjacencyMatrix, 0);
     setBellmanFordSolution(sol); // Pass Bellman-Ford solution to Paths
     console.log(sol);
@@ -67,10 +72,12 @@ const GraphController: React.FC = () => {
         
         <button onClick={runSolve}>Run RecursiveSol</button>
         <button onClick={runBF}>Run BellmanFord</button>
+        <button onClick={runFW}>Run FloydWarshall</button>
 
         <Paths
           bellmanFordSolution={bellmanFordSolution}
           recursiveSolution={recursiveSolution}
+          floydWarshallSolution={FloydWarshallSolution}
           nodes={graph.getNodes()}
           matrixCost={graph.getAdjacencyMatrixNotLog()}
         />

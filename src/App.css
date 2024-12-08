@@ -42,3 +42,18 @@ svg {
   border: 1px solid black; /* Optional for debugging */
   box-sizing: border-box; /* Ensure padding/border is considered */
 }
+
+/* Media query for mobile screens */
+@media (max-width: 768px) {
+  .app-container {
+    flex-direction: column; /* Stack top to bottom on smaller screens */
+    height: 100vh;
+  }
+
+  .left-panel, .right-panel {
+    border-right: none;
+    width: 100%; /* Full width for stacking */
+    height: auto; /* Let panels expand naturally */
+    overflow:auto;
+  }
+}
