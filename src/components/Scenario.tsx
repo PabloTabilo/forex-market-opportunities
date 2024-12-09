@@ -21,26 +21,38 @@ function Scenario() {
         given <strong>exchange rates</strong> along this path. If, upon returning to the starting
         currency, we end up with an amount{" "}
         <InlineMath>{String.raw`A'`}</InlineMath>, where {" "}
-        <InlineMath>{String.raw`A' > A`}</InlineMath>, then we have achieved a <i>gain</i>—indicative of an 
-        <strong>arbitrage opportunity</strong>.
+        <InlineMath>{String.raw`A' > A`}</InlineMath>, then we have achieved a <i>gain</i>—indicative of an <strong>arbitrage opportunity</strong>.
       </p>
-        <h2>Definitions</h2>
+
+      <h2>Can This Problem Be Represented as a Graph?</h2> 
+      <p> Yes, it can. Each <strong>currency</strong>, <InlineMath>{String.raw`c_i`}</InlineMath>, 
+      is a <strong>node</strong> in the graph, and the <strong>edges</strong> represent the <strong>exchange rates</strong>. 
+      Specifically, <InlineMath>{String.raw`r_{i,j}`}</InlineMath> denotes the exchange rate from node <InlineMath>i</InlineMath> 
+      to node <InlineMath>j</InlineMath>. 
+      </p> 
+      <p> The graph is structured as a <strong>complete graph</strong> where each edge is <strong>directed</strong>. 
+        This means that if you start at node <InlineMath>i</InlineMath> and move to node <InlineMath>j</InlineMath>, 
+        the rate is <InlineMath>{String.raw`r_{i,j}`}</InlineMath>. 
+        Conversely, if you go from node <InlineMath>j</InlineMath> to node <InlineMath>i</InlineMath>, 
+        the exchange rate is given by <InlineMath>{String.raw`r_{j,i} = r^{-1}_{i,j}`}</InlineMath>. 
+        </p>
+
+        <h3>Definitions</h3>
       <p>
-        Each directed edge from currency <InlineMath>C_i</InlineMath> to{" "}
-        <InlineMath>C_j</InlineMath> is associated with an exchange rate:
+        Each directed edge from currency <InlineMath>c_i</InlineMath> to <InlineMath>c_j</InlineMath> is associated with an exchange rate:
       </p>
-      <BlockMath>{String.raw`\text{rate}_{i,j} = \frac{\text{units of }C_j}{1\,\text{unit of }C_i}.`}</BlockMath>
+      <BlockMath>{String.raw`\text{r}_{i,j} = \frac{\text{units of }c_j}{1\,\text{unit of }c_i}.`}</BlockMath>
       <p>
         Our goal is to detect an <b>arbitrage opportunity</b>, i.e., a sequence
         of exchanges starting and ending in the same currency, resulting in more
         units than we started with.
       </p>
-      <h2>From Rates to Graph Weights</h2>
+      <h3>From Rates to Graph Weights</h3>
       <p>
         An arbitrage cycle are easier to detect using a logarithmic
         transformation. Define:
       </p>
-      <BlockMath>{String.raw`w_{i,j} = -\ln(\text{rate}_{i,j})`}</BlockMath>
+      <BlockMath>{String.raw`w_{i,j} = -\ln(\text{r}_{i,j})`}</BlockMath>
     </div>
   );
 }

@@ -72,6 +72,8 @@ $$\sum_{k = 1}^n w_{c_k \rightarrow c_{k+1}} < 0$$
 
 # Tasks
 * [Trello Activities](https://trello.com/b/g8V64xTz/forex-market-application)
+* [View latex presentation](https://www.overleaf.com/read/qwwhgykxmbqh#9b5206)
+  - This is for the video that i wanna create
 
 # Technologies
 * [d3.js](https://d3js.org/)
