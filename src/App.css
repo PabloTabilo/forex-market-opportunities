@@ -13,6 +13,7 @@
   flex: 1;
   border-right: 2px solid #ddd;
   overflow: auto; /* Allow scrolling if content overflows */
+  padding-left: 5px;
 }
 
 .scenario-container {
